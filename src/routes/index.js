@@ -8,4 +8,12 @@ router.get('/', (req, res) => {
     })
 } );
 
+
+router.get('/terms', (req, res) => {
+    return res.json({
+        message: 'Service terms',
+    })
+} );
+
+
 module.exports = router;
