@@ -135,21 +135,6 @@ const deleteDoctor = async (req, res) => {
     // Catch error if something went wrong while searching at DB
   } catch (error) { sendErrorMessage(error, res) };
 
-  // const { id: doctorId } = req.params;
-
-  // try {
-  //     const doctorFoundById = await Doctor.findByPk(doctorId);
-
-  //   if ( doctorFoundById == null ) {
-  //     return res.status(404).json({message: `Médico não encontrado com o ID: ${req.params.id}`});
-      
-  //   } else {
-  //       await Doctor.destroy(doctorFoundById);
-  //       return res.status(202).json({message: `Doutor ${doctorFoundById.name} deletado com sucesso!`})
-  //   }
-
-  // } catch (error) { sendErrorMessage(error, res) }; 
-
 };
 
 
