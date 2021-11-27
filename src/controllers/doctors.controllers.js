@@ -1,3 +1,4 @@
+const { canTreatArrayAsAnd } = require("sequelize/dist/lib/utils");
 const { isNotNull, sendErrorMessage } = require("../../utils/utilities");
 const Doctor = require("../models/doctors.model");
 
@@ -35,11 +36,11 @@ const createDoctor = async (req, res) => {
                 res.status(200).json({message: `Cadastro do doutor ${name} criado com sucesso`});
 
                 // Catch error if something went wrong while POSTING at DB
-              } catch (error) { sendErrorMessage(error) };
+              } catch (error) { sendErrorMessage(error, res) };
             };
       };
       // Catch error if something went wrong while searching for CRM
-    }).catch( function (error)  { sendErrorMessage(error) });
+    }).catch( function (error)  { sendErrorMessage(error, res) });
 };
 
 
@@ -63,7 +64,7 @@ const getAllDoctors = async (req, res) => {
           res.status(204).send()
       };
       // Catch error if something went wrong while returning all data from DB
-    } catch (error) { sendErrorMessage(error) };
+    } catch (error) { sendErrorMessage(error, res) };
 };
 
 
@@ -83,7 +84,7 @@ const getAllDoctors = async (req, res) => {
           res.json(doctorById);
         }
       // Catch error if something went wrong while searching at DB
-    } catch (error) { sendErrorMessage(error) };        
+    } catch (error) { sendErrorMessage(error, res) };        
  };
 
     /***** UPDATE *****/
@@ -95,7 +96,7 @@ const updateDoctor = async (req, res) => {
     const obj = { doctorId, updateBody };
 
     if (!doctorId) {
-      // Verify if ID was found at DB, if not, return error message
+      // Verify if ID was found at DB. If not fournd, return error message
       return res.status(400).json({message: `Médico não encontrado com o id: ${req.params.id}`});
         
     } else {
@@ -111,16 +112,16 @@ const updateDoctor = async (req, res) => {
           doctorUpdated
       }]);
         // Catch error if something went wrong while searching at DB
-    }; } catch (error) { sendErrorMessage(error) }
+    }; } catch (error) { sendErrorMessage(error, res) }
 };
 
 
     /***** DELETE DOCTOR *****/
 
 const deleteDoctor = async (req, res) => {
+  const { id: doctorId } = req.params;
 
   try {
-      const { id: doctorId } = req.params;
       const doctorFoundById = await Doctor.findByPk(doctorId);
       
       if(doctorFoundById == null) {
@@ -132,7 +133,23 @@ const deleteDoctor = async (req, res) => {
       res.status(202).json({message: `Doutor ${doctorFoundById.name} deletado com sucesso!`})
     
     // Catch error if something went wrong while searching at DB
-  } catch (error) { sendErrorMessage(error) };
+  } catch (error) { sendErrorMessage(error, res) };
+
+  // const { id: doctorId } = req.params;
+
+  // try {
+  //     const doctorFoundById = await Doctor.findByPk(doctorId);
+
+  //   if ( doctorFoundById == null ) {
+  //     return res.status(404).json({message: `Médico não encontrado com o ID: ${req.params.id}`});
+      
+  //   } else {
+  //       await Doctor.destroy(doctorFoundById);
+  //       return res.status(202).json({message: `Doutor ${doctorFoundById.name} deletado com sucesso!`})
+  //   }
+
+  // } catch (error) { sendErrorMessage(error, res) }; 
+
 };
 
 
@@ -154,7 +171,7 @@ const updateFavorite = async (req, res) => {
         res.status(404).send({message: `Médico com ID ${doctorId} não encontrato`})
       }
   // Catch error if something went wrong while searching at DB
-  } catch (error) { sendErrorMessage(error) }
+  } catch (error) { sendErrorMessage(error, res) }
 
 };
 

@@ -15,7 +15,7 @@ const isNotNull = function(obj) {
 
     /***** SEND MESSAGE ERROR IF CATCH "" *****/
 
-const sendErrorMessage = function(error) {
+const sendErrorMessage = function(error, res) {
     return res.status(500).json({
         error,
         message: `Ocorreu um erro durante o acesso ao Banco de Dados.`

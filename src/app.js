@@ -21,6 +21,18 @@ app
     next();
 })
 
+// Access permissions for Front-End
+app.options("/*", (req, res) => {
+    res.header("Access-Control-Allow-Origin", "*")
+    res.header("Access-Control-Allow-Headers")
+    res.header(
+      "Access-Control-Allow-Methods",
+      "PUT,POST,GET,DELETE,OPTIONS,PATCH"
+    );
+    res.send();
+  })
+  
+
 .use('/', index)
 .use('/doctors', routes)
 
